@@ -1,5 +1,5 @@
-from grid import Grid
-from tile import Tile
+from src.grid import Grid
+from src.tile import Tile
 
 def test_init():
     g = Grid()

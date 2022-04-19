@@ -1,6 +1,7 @@
-from grid import Grid
-from tile import Tile
-from rotations import Rotations
+from src.grid import Grid
+from src.tile import Tile
+from src.rotations import Rotations
+
 
 def test_clockwise_rotate():
     g = Grid()
