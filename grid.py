@@ -26,15 +26,19 @@ class Grid:
 
     def normalise(self, ins):
         """Normalise grid to a left swipe"""
-        func = {"up":Rotations.anticlockwise_turn, "left": False, "down":Rotations.full_turn, "right": Rotations.clockwise_turn}[ins]
+        func = {"up":Rotations.anticlockwise_turn, "left": False, "down":Rotations.clockwise_turn, "right": Rotations.full_turn}[ins]
         if func:
             return func(self.grid, self.grid_size)
+        else:
+            return self.grid
     
     def denormalise(self, ins, grid):
         """Normalise grid to a left swipe"""
-        func = {"up":Rotations.clockwise_turn, "left": False, "down":Rotations.full_turn, "right": Rotations.anticlockwise_turn}[ins]
+        func = {"up":Rotations.clockwise_turn, "left": False, "down":Rotations.anticlockwise_turn, "right": Rotations.full_turn}[ins]
         if func:
             return func(grid, self.grid_size)
+        else:
+            return grid
 
     def normal_swipe(self, grid):
         """Performs a left swipe"""
@@ -64,12 +68,18 @@ class Grid:
             grid[i] = new_line
         return grid
 
+    def compare(self):
+        changed_grid = [t.val for line in self.grid for t in line]
+        original_grid = [t.val for line in self.original_grid for t in line]
+        return not changed_grid == original_grid
+    
     def swipe(self, ins):
         """Normalises to left swipe, performs swipe then denormalises"""
-        grid = self.normalise(ins)
-        grid = self.normal_swipe(grid)
-        self.grid = self.denormalise(ins, grid)
-        return True
+        self.original_grid = self.grid.copy()
+        normalised_grid = self.normalise(ins)
+        swiped_grid = self.normal_swipe(normalised_grid)
+        self.grid = self.denormalise(ins, swiped_grid)
+        return self.compare()
 
     def run(self):
         while True:
