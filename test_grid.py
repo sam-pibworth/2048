@@ -32,5 +32,5 @@ def test_normalswiple():
     g.grid = g.normal_swipe(g.grid)
     assert g.grid[1][0].val == 8
 
-if __name__ == '__main__':
-    test_normalswipe_simple()
+# if __name__ == '__main__':
+#     test_clockwise_rotate()
