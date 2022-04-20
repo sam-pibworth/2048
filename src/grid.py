@@ -2,6 +2,7 @@ from tile import Tile
 from rotations import Rotations
 from response_parser import UserInput
 import random
+import os
 
 
 class Grid:
@@ -81,9 +82,32 @@ class Grid:
         self.grid = self.denormalise(ins, swiped_grid)
         return self.compare()
 
+    def death_check(self):
+        size = self.grid_size
+        if any([True if not t.val else False for line in self.grid for t in line]):
+            return False
+        for i in range(size):
+            line = self.grid[i]
+            for j in range(size):
+                t = line[j]
+                for u,v in [(i+1,j), (i-1,j), (i,j+1), (i,j-1)]:
+                    if 0 <= u < size and 0 <= v < size:
+                        if self.grid[u][v].val == t.val:
+                            return False
+        return True
+
+    
+    def die(self):
+        os.system('clear')
+        print('you have died :(')
+        exit()
+
+
     def run(self):
         while True:
             print(self)
             resp = UserInput.get_response()
             if self.swipe(resp):
                 self.add_new_tiles()
+            if self.death_check():
+                self.die()
